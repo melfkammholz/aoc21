@@ -93,19 +93,11 @@ void test_case() {
   }
 
   REP(80) {
-    int a = A[0];
-    A[0] = 0;
-    for (int i = 1; i < 9; i++) {
-      A[i - 1] += A[i];
-      A[i] = 0;
-    }
-    A[6] += a;
-    A[8] += a;
+    rotate(A.begin(), A.begin() + 1, A.end());
+    A[6] += A[8];
   }
-
-  int s = 0;
-  FOR(i, 9) s += A[i];
-  cout << s << endl;
+  
+  cout << accumulate(ALL(A), 0LL) << endl;
 }
 
 _int main(void) {
