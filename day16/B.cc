@@ -114,6 +114,8 @@ string hex2bin(char c) {
   return bin.substr(bin.size() - 4);
 }
 
+int v = 0;
+
 vector<function<int(int, int)>> fs = {
     [](int a, int b) { return a + b; },
     [](int a, int b) { return a * b; },
@@ -131,21 +133,20 @@ int readNext(const string& in, int& i, int n) {
   return x;
 }
 
-pair<int, int> parseNum(const string& in, int i) {
+int parseNum(const string& in, int& i) {
   int x = 0;
   while (in[i++] == '1') {
     x += readNext(in, i, 4);
     x <<= 4;
   }
   x += readNext(in, i, 4);
-  return { i, x }; 
+  return x; 
 }
 
-pair<int, int> parse(const string& in, int i, int n) {
-  int t;
+int parse(const string& in, int& i, int n) {
   vector<int> xs;
   readNext(in, i, 3);
-  t = readNext(in, i, 3);
+  int t = readNext(in, i, 3);
   if (t == 4) {
     return parseNum(in, i);
   } else {
@@ -154,16 +155,12 @@ pair<int, int> parse(const string& in, int i, int n) {
       int L = readNext(in, i, 15);
       int j = i;
       do {
-        auto [k, x] = parse(in, i, L);
-        i = k;
-        xs.pb(x);
+        xs.pb(parse(in, i, L));
       } while (i < j + L);
     } else {
       int L = readNext(in, i, 11);
-      while (L--) {
-        auto [j, x] = parse(in, i, 11);
-        i = j;
-        xs.pb(x);
+      REP(L) {
+        xs.pb(parse(in, i, 11));
       }
     }
   }
@@ -171,10 +168,10 @@ pair<int, int> parse(const string& in, int i, int n) {
   assert(t != 4);
   assert(!xs.empty());
   int X = xs[0];
-  for (int i = 1; i < SZ(xs); i++)
-    X = fs[t](X, xs[i]);
+  for (int j = 1; j < SZ(xs); j++)
+    X = fs[t](X, xs[j]);
 
-  return { i, X };
+  return X;
 }
 
 void test_case() {
@@ -184,7 +181,8 @@ void test_case() {
   string in;
   for (char c : s)
     in += hex2bin(c);
-  auto [_, res] = parse(in, 0, in.size());
+  int i = 0;
+  auto res = parse(in, i, in.size());
   cout << res << endl;
 }
 
