@@ -103,15 +103,7 @@ struct skip {
 /* using mint = atcoder::modint1000000007; */
 
 string hex2bin(char c) {
-  string bin;
-  int x = isdigit(c) ? c - '0' : c - 'A' + 10;
-  while (x > 0) {
-    bin.append(1, '0' + (x & 1));
-    x >>= 1;
-  }
-  reverse(ALL(bin));
-  bin = "0000" + bin;
-  return bin.substr(bin.size() - 4);
+  return bitset<4>(stoi(string(1, c), nullptr, 16)).to_string();
 }
 
 int v = 0;
