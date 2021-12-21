@@ -125,8 +125,9 @@ void test_case() {
   solve(B, p[1], 0, 1, 0);
   
   int res1 = 0, res2 = 0;
-  FOR(i, 10) FOR(j, 21) res1 += B[i][j] * A[i + 1][21];
-  FOR(i, 11) FOR(j, 21) res2 += A[i][j] * B[i][21];
+  int m = min(SZ(A), SZ(B));
+  FOR(i, m - 1) FOR(j, 21) res1 += B[i][j] * A[i + 1][21];
+  FOR(i, m) FOR(j, 21) res2 += A[i][j] * B[i][21];
   cout << max(res1, res2) << endl;
 }
 
